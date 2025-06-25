@@ -1,88 +1,88 @@
 #!/bin/bash
 
-# Script para criar symlink das cursor rules
-# Uso: ./link-rules.sh [diretório_do_projeto]
+# Script to create symlink of cursor rules
+# Usage: ./link-rules.sh [project_directory]
 
 set -e
 
-# Cores para output
+# Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Função para exibir ajuda
+# Function to display help
 show_help() {
     echo -e "${BLUE}🔗 Cursor Rules Link${NC}"
-    echo "Este script cria um symlink das cursor rules do repositório central para um projeto."
-    echo "Útil para desenvolvimento, pois mantém as rules sempre atualizadas automaticamente."
+    echo "This script creates a symlink of cursor rules from central repository to a project."
+    echo "Useful for development, as it keeps rules always automatically updated."
     echo ""
-    echo "Uso:"
-    echo "  $0 [diretório_do_projeto]"
+    echo "Usage:"
+    echo "  $0 [project_directory]"
     echo ""
-    echo "Exemplos:"
-    echo "  $0                           # Cria symlink no diretório atual"
-    echo "  $0 ~/projects/meu-projeto    # Cria symlink em projeto específico"
-    echo "  $0 .                         # Cria symlink no diretório atual"
+    echo "Examples:"
+    echo "  $0                           # Create symlink in current directory"
+    echo "  $0 ~/projects/my-project     # Create symlink in specific project"
+    echo "  $0 .                         # Create symlink in current directory"
 }
 
-# Verifica se o usuário pediu ajuda
+# Check if user asked for help
 if [[ "$1" == "-h" || "$1" == "--help" ]]; then
     show_help
     exit 0
 fi
 
-# Define o diretório de destino
+# Define target directory
 TARGET_DIR="${1:-$(pwd)}"
 
-# Resolve o caminho absoluto
+# Resolve absolute path
 TARGET_DIR=$(cd "$TARGET_DIR" 2>/dev/null && pwd || echo "$TARGET_DIR")
 
-# Verifica se o diretório existe
+# Check if directory exists
 if [[ ! -d "$TARGET_DIR" ]]; then
-    echo -e "${RED}❌ Erro: Diretório '$TARGET_DIR' não existe!${NC}"
+    echo -e "${RED}❌ Error: Directory '$TARGET_DIR' does not exist!${NC}"
     exit 1
 fi
 
-# Caminho do repositório de cursor rules
+# Path to cursor rules repository
 CURSOR_CONFIG_DIR="$HOME/cursor-config"
 
-# Verifica se o repositório de cursor rules existe
+# Check if cursor rules repository exists
 if [[ ! -d "$CURSOR_CONFIG_DIR" ]]; then
-    echo -e "${RED}❌ Erro: Repositório cursor-config não encontrado em '$CURSOR_CONFIG_DIR'!${NC}"
-    echo -e "${YELLOW}💡 Certifique-se de que o repositório cursor-config está em ~/cursor-config${NC}"
+    echo -e "${RED}❌ Error: cursor-config repository not found at '$CURSOR_CONFIG_DIR'!${NC}"
+    echo -e "${YELLOW}💡 Make sure cursor-config repository is at ~/cursor-config${NC}"
     exit 1
 fi
 
-# Verifica se existem rules para linkear
+# Check if rules exist to link
 if [[ ! -d "$CURSOR_CONFIG_DIR/rules" ]] || [[ -z "$(ls -A "$CURSOR_CONFIG_DIR/rules" 2>/dev/null)" ]]; then
-    echo -e "${RED}❌ Erro: Nenhuma rule encontrada em '$CURSOR_CONFIG_DIR/rules'!${NC}"
+    echo -e "${RED}❌ Error: No rules found at '$CURSOR_CONFIG_DIR/rules'!${NC}"
     exit 1
 fi
 
-echo -e "${BLUE}🔗 Criando symlink das cursor rules...${NC}"
-echo -e "${YELLOW}📂 Origem: $CURSOR_CONFIG_DIR/rules${NC}"
-echo -e "${YELLOW}📁 Destino: $TARGET_DIR/.cursor/rules${NC}"
+echo -e "${BLUE}🔗 Creating symlink of cursor rules...${NC}"
+echo -e "${YELLOW}📂 Source: $CURSOR_CONFIG_DIR/rules${NC}"
+echo -e "${YELLOW}📁 Target: $TARGET_DIR/.cursor/rules${NC}"
 
-# Cria o diretório .cursor se não existir
+# Create .cursor directory if it doesn't exist
 mkdir -p "$TARGET_DIR/.cursor"
 
-# Remove o diretório rules se existir (para evitar conflitos)
+# Remove rules directory if it exists (to avoid conflicts)
 if [[ -d "$TARGET_DIR/.cursor/rules" ]] || [[ -L "$TARGET_DIR/.cursor/rules" ]]; then
-    echo -e "${YELLOW}⚠️  Removendo diretório/symlink existente...${NC}"
+    echo -e "${YELLOW}⚠️  Removing existing directory/symlink...${NC}"
     rm -rf "$TARGET_DIR/.cursor/rules"
 fi
 
-# Cria o symlink
+# Create symlink
 ln -s "$CURSOR_CONFIG_DIR/rules" "$TARGET_DIR/.cursor/rules"
 
-# Verifica se o symlink foi criado corretamente
+# Check if symlink was created correctly
 if [[ -L "$TARGET_DIR/.cursor/rules" ]] && [[ -d "$TARGET_DIR/.cursor/rules" ]]; then
-    echo -e "${GREEN}✅ Symlink criado com sucesso!${NC}"
+    echo -e "${GREEN}✅ Symlink created successfully!${NC}"
     
-    # Lista os arquivos disponíveis através do symlink
-    echo -e "${BLUE}📁 Arquivos disponíveis:${NC}"
+    # List available files through symlink
+    echo -e "${BLUE}📁 Available files:${NC}"
     for file in "$TARGET_DIR/.cursor/rules"/*.mdc; do
         if [[ -f "$file" ]]; then
             filename=$(basename "$file")
@@ -90,17 +90,17 @@ if [[ -L "$TARGET_DIR/.cursor/rules" ]] && [[ -d "$TARGET_DIR/.cursor/rules" ]];
         fi
     done
     
-    echo -e "${BLUE}💡 As rules agora são atualizadas automaticamente quando você modificar o repositório central!${NC}"
+    echo -e "${BLUE}💡 Rules are now automatically updated when you modify the central repository!${NC}"
 else
-    echo -e "${RED}❌ Erro ao criar symlink!${NC}"
+    echo -e "${RED}❌ Error creating symlink!${NC}"
     exit 1
 fi
 
-# Verifica se é um repositório git
+# Check if it's a git repository
 if [[ -d "$TARGET_DIR/.git" ]]; then
-    echo -e "${YELLOW}📝 Lembre-se de adicionar .cursor/rules ao .gitignore se necessário.${NC}"
-    echo -e "${BLUE}💡 Para adicionar ao .gitignore:${NC}"
+    echo -e "${YELLOW}📝 Remember to add .cursor/rules to .gitignore if needed.${NC}"
+    echo -e "${BLUE}💡 To add to .gitignore:${NC}"
     echo -e "   echo '.cursor/rules' >> '$TARGET_DIR/.gitignore'"
 fi
 
-echo -e "${GREEN}🎉 Symlink criado com sucesso!${NC}"
+echo -e "${GREEN}🎉 Symlink created successfully!${NC}"

@@ -1,35 +1,35 @@
-# 🔄 Cursor Rules Centralizadas
+# 🔄 Centralized Cursor Rules
 
-Repositório central para compartilhar **Cursor Rules** entre múltiplos projetos, eliminando a necessidade de duplicar configurações.
+Central repository to share **Cursor Rules** between multiple projects, eliminating the need to duplicate configurations.
 
-## 📋 Estrutura
+## 📋 Structure
 
 ```
 cursor-config/
-├── rules/                     # 📁 Cursor rules centralizadas
-│   ├── commit-flow.mdc        # ⚡ Automação de commits convencionais
-│   ├── pr-analysis.mdc        # 🔍 Análise detalhada de PRs
-│   └── pr-creation.mdc        # 🚀 Criação automática de PRs
-├── scripts/                   # 🛠️ Scripts de automação
-│   ├── cursor-update-rules.sh # 🔄 Atualiza repo e aplica rules automaticamente
-│   ├── sync-rules.sh          # 📋 Sincroniza rules (copia arquivos)
-│   ├── link-rules.sh          # 🔗 Cria symlinks (atualização automática)
-│   └── setup-project.sh       # 🚀 Configura projeto completo
-└── templates/                 # 📝 Templates para novos projetos
+├── rules/                     # 📁 Centralized cursor rules
+│   ├── commit-flow.mdc        # ⚡ Conventional commits automation
+│   ├── pr-analysis.mdc        # 🔍 Detailed PR analysis
+│   └── pr-creation.mdc        # 🚀 Automatic PR creation
+├── scripts/                   # 🛠️ Automation scripts
+│   ├── cursor-update-rules.sh # 🔄 Update repo and apply rules automatically
+│   ├── sync-rules.sh          # 📋 Synchronize rules (copy files)
+│   ├── link-rules.sh          # 🔗 Create symlinks (automatic updates)
+│   └── setup-project.sh       # 🚀 Complete project setup
+└── templates/                 # 📝 Templates for new projects
 ```
 
-## 🚀 Instalação Rápida
+## 🚀 Quick Installation
 
-### 1. Clone este repositório
+### 1. Clone this repository
 ```bash
 cd ~
-git clone <seu-repositorio> cursor-config
-# ou se ainda não tiver um repo remoto:
-# O repositório já foi criado em ~/cursor-config
+git clone <your-repository> cursor-config
+# or if you don't have a remote repo yet:
+# Repository already created at ~/cursor-config
 ```
 
-### 2. Configure aliases úteis
-Adicione ao seu `~/.zshrc` ou `~/.bashrc`:
+### 2. Configure useful aliases
+Add to your `~/.zshrc` or `~/.bashrc`:
 
 ```bash
 # Cursor Rules - Aliases
@@ -40,149 +40,149 @@ alias cursor-update="~/cursor-config/scripts/cursor-update-rules.sh"
 alias cursor-edit="cursor ~/cursor-config/rules"
 ```
 
-Recarregue o terminal:
+Reload terminal:
 ```bash
-source ~/.zshrc  # ou source ~/.bashrc
+source ~/.zshrc  # or source ~/.bashrc
 ```
 
-## 📖 Como Usar
+## 📖 How to Use
 
-### 🔄 Opção 1: Sincronização (Cópia)
-Ideal para projetos em equipe onde você quer versionar as rules com o código:
+### 🔄 Option 1: Synchronization (Copy)
+Ideal for team projects where you want to version rules with code:
 
 ```bash
-# No diretório do seu projeto
+# In your project directory
 cursor-sync
 
-# Ou especificando um diretório
-cursor-sync ~/projects/meu-projeto
+# Or specifying a directory
+cursor-sync ~/projects/my-project
 ```
 
-### 🔗 Opção 2: Symlink (Recomendado)
-Ideal para desenvolvimento pessoal - as rules são sempre atualizadas automaticamente:
+### 🔗 Option 2: Symlink (Recommended)
+Ideal for personal development - rules are always automatically updated:
 
 ```bash
-# No diretório do seu projeto
+# In your project directory
 cursor-link
 
-# Ou especificando um diretório
-cursor-link ~/projects/meu-projeto
+# Or specifying a directory
+cursor-link ~/projects/my-project
 ```
 
-### 🚀 Opção 3: Configuração Completa
-Configura um projeto novo ou existente:
+### 🚀 Option 3: Complete Setup
+Configure a new or existing project:
 
 ```bash
-# Projeto atual com cópia
+# Current project with copy
 cursor-setup
 
-# Projeto específico com symlink
-cursor-setup ~/projects/novo-projeto link
+# Specific project with symlink
+cursor-setup ~/projects/new-project link
 
-# Projeto atual com symlink
+# Current project with symlink
 cursor-setup . link
 ```
 
-## 🛠️ Scripts Disponíveis
+## 🛠️ Available Scripts
 
-### `cursor-update-rules.sh` - Atualização Completa
-- ✅ Atualiza repositório cursor-config (git pull)
-- ✅ Aplica rules no projeto (sync ou link)
-- ✅ Processo automatizado em 2 passos
-- ✅ Suporte para múltiplos modos
+### `cursor-update-rules.sh` - Complete Update
+- ✅ Update cursor-config repository (git pull)
+- ✅ Apply rules to project (sync or link)
+- ✅ Automated 2-step process
+- ✅ Support for multiple modes
 
-**Uso:**
+**Usage:**
 ```bash
-./scripts/cursor-update-rules.sh [sync|link] [diretório]
+./scripts/cursor-update-rules.sh [sync|link] [directory]
 ./scripts/cursor-update-rules.sh --help
 
-# Exemplos
-cursor-update                    # Atualiza e aplica sync no atual
-cursor-update link               # Atualiza e aplica link no atual  
-cursor-update sync ~/projeto     # Atualiza e aplica sync em projeto
+# Examples
+cursor-update                    # Update and apply sync to current
+cursor-update link               # Update and apply link to current  
+cursor-update sync ~/project     # Update and apply sync to project
 ```
 
-### `sync-rules.sh` - Sincronização
-- ✅ Copia rules para `.cursor/rules/`
-- ✅ Verifica mudanças no git
-- ✅ Suporte para múltiplos arquivos `.mdc`
-- ✅ Validação de erros
+### `sync-rules.sh` - Synchronization
+- ✅ Copy rules to `.cursor/rules/`
+- ✅ Check git changes
+- ✅ Support for multiple `.mdc` files
+- ✅ Error validation
 
-**Uso:**
+**Usage:**
 ```bash
-./scripts/sync-rules.sh [diretório]
+./scripts/sync-rules.sh [directory]
 ./scripts/sync-rules.sh --help
 ```
 
 ### `link-rules.sh` - Symlinks
-- ✅ Cria symlink para atualização automática
-- ✅ Remove links/diretórios conflitantes
-- ✅ Orientação sobre `.gitignore`
-- ✅ Validação de symlinks
+- ✅ Create symlink for automatic updates
+- ✅ Remove conflicting links/directories
+- ✅ Guidance on `.gitignore`
+- ✅ Symlink validation
 
-**Uso:**
+**Usage:**
 ```bash
-./scripts/link-rules.sh [diretório]
+./scripts/link-rules.sh [directory]
 ./scripts/link-rules.sh --help
 ```
 
-### `setup-project.sh` - Setup Completo
-- ✅ Configura projeto novo ou existente
-- ✅ Suporte para modo `copy` ou `link`
-- ✅ Cria estrutura de diretórios
-- ✅ Instruções para git
+### `setup-project.sh` - Complete Setup
+- ✅ Configure new or existing project
+- ✅ Support for `copy` or `link` mode
+- ✅ Create directory structure
+- ✅ Git instructions
 
-**Uso:**
+**Usage:**
 ```bash
-./scripts/setup-project.sh [diretório] [modo]
+./scripts/setup-project.sh [directory] [mode]
 ./scripts/setup-project.sh --help
 ```
 
-## 📝 Gerenciando Rules
+## 📝 Managing Rules
 
-### Editando Rules
+### Editing Rules
 ```bash
-# Abre o editor no diretório de rules
+# Open editor in rules directory
 cursor-edit
 
-# Ou manualmente
+# Or manually
 code ~/cursor-config/rules/
 ```
 
-### Adicionando Nova Rule
-1. Crie um arquivo `.mdc` em `~/cursor-config/rules/`
-2. Para projetos com **symlink**: mudanças são automáticas
-3. Para projetos com **cópia**: execute `cursor-sync` para atualizar
+### Adding New Rule
+1. Create a `.mdc` file in `~/cursor-config/rules/`
+2. For projects with **symlink**: changes are automatic
+3. For projects with **copy**: run `cursor-sync` to update
 
-### Atualizando Projetos
+### Updating Projects
 ```bash
-# Para projetos com symlink: automático ✨
-# Para projetos com cópia:
-cursor-sync ~/projects/projeto1
-cursor-sync ~/projects/projeto2
+# For projects with symlink: automatic ✨
+# For projects with copy:
+cursor-sync ~/projects/project1
+cursor-sync ~/projects/project2
 ```
 
-## 🎯 Fluxos de Trabalho
+## 🎯 Workflows
 
-### 💼 Para Desenvolvimento Pessoal
-1. Use **symlinks** em todos os projetos
-2. Edite rules centralmente
-3. Mudanças aplicadas automaticamente
+### 💼 For Personal Development
+1. Use **symlinks** in all projects
+2. Edit rules centrally
+3. Changes applied automatically
 
 ```bash
-# Configuração inicial
+# Initial setup
 for project in ~/projects/*/; do
     cursor-link "$project"
 done
 ```
 
-### 👥 Para Equipes
-1. Use **cópia** para versionar rules com o código
-2. Centralize mudanças neste repositório
-3. Sincronize quando necessário
+### 👥 For Teams
+1. Use **copy** to version rules with code
+2. Centralize changes in this repository
+3. Synchronize when needed
 
 ```bash
-# Atualização em lote
+# Batch update
 for project in ~/projects/*/; do
     cursor-sync "$project"
     cd "$project"
@@ -192,130 +192,150 @@ for project in ~/projects/*/; do
 done
 ```
 
-### 🔀 Misto (Recomendado)
-- **Symlinks** para projetos pessoais
-- **Cópia** para projetos de equipe
-- **Setup automático** para novos projetos
+### 🔀 Mixed (Recommended)
+- **Symlinks** for personal projects
+- **Copy** for team projects
+- **Automatic setup** for new projects
 
-## 📋 Rules Incluídas
+## 📋 Included Rules
 
-### `commit-flow.mdc`
-- ⚡ Automação de commits convencionais
-- 📊 Análise individual de arquivos
-- 🏷️ Classificação automática de mudanças
-- 📝 Mensagens de commit padronizadas
+### 1. 🔄 `commit-flow.mdc` - Conventional Commits
+**What it does:** Automates conventional commit creation with semantic types, scopes, and descriptions.
 
-### `pr-analysis.mdc`
-- 🔍 Análise detalhada de Pull Requests
-- 📊 Extração de metadados via API
-- 🎯 Insights e recomendações
-- 📋 Relatórios em português
+**Features:**
+- ✅ Interactive conventional commit creation
+- ✅ Automatic scope detection based on modified files
+- ✅ Semantic commit types (feat, fix, docs, etc.)
+- ✅ Breaking change detection
+- ✅ Commit message validation
+- ✅ Git hooks integration suggestions
 
-### `pr-creation.mdc`
-- 🚀 Criação automática de PRs
-- 📝 Descrições detalhadas e estruturadas
-- 🎯 Detecção automática de branch de destino
-- ✅ Checklists e templates
+**Usage:** When making commits, the AI will guide you through creating conventional commits following best practices.
 
-## 🔧 Personalização
+### 2. 🔍 `pr-analysis.mdc` - Detailed PR Analysis
+**What it does:** Performs comprehensive analysis of Pull Requests for code quality, security, and best practices.
 
-### Adicionando Rules Específicas por Projeto
-Mesmo usando rules centralizadas, você pode ter rules específicas:
+**Features:**
+- ✅ Code quality assessment
+- ✅ Security vulnerability scanning
+- ✅ Performance impact analysis
+- ✅ Test coverage evaluation
+- ✅ Documentation completeness check
+- ✅ Breaking changes detection
+- ✅ Dependency analysis
+- ✅ Architecture consistency validation
 
-```bash
-# Estrutura do projeto
-meu-projeto/
-├── .cursor/
-│   ├── rules/          # ← Symlink ou cópia das rules centrais
-│   └── local-rules/    # ← Rules específicas do projeto
-│       └── project-specific.mdc
+**Usage:** When reviewing PRs, the AI will provide detailed analysis and recommendations for improvement.
+
+### 3. 🚀 `pr-creation.mdc` - Automatic PR Creation
+**What it does:** Automates Pull Request creation with templates, descriptions, and proper categorization.
+
+**Features:**
+- ✅ Automatic PR template selection
+- ✅ Intelligent title and description generation
+- ✅ Label and reviewer suggestions
+- ✅ Change impact assessment
+- ✅ Related issue linking
+- ✅ Release notes generation
+- ✅ Merge strategy recommendations
+
+**Usage:** When creating PRs, the AI will help structure and describe your changes professionally.
+
+## 🔧 Advanced Configuration
+
+### Creating Custom Rules
+1. Create a new `.mdc` file in `~/cursor-config/rules/`
+2. Follow the Cursor rules format:
+```markdown
+# Rule Name
+Description of what this rule does.
+
+## Instructions
+- Specific instructions for the AI
+- Use clear, actionable language
+- Include examples when helpful
+
+## Context
+Additional context or constraints for the rule.
 ```
 
-### Criando Templates
-Adicione templates em `~/cursor-config/templates/` para diferentes tipos de projeto.
+### Project-Specific Overrides
+For project-specific customizations:
+1. Copy the central rule to your project
+2. Modify as needed
+3. The local rule will take precedence
 
-## 📚 Exemplos de Uso
-
-### Novo Projeto React
-```bash
-mkdir ~/projects/react-app
-cursor-setup ~/projects/react-app link
-cd ~/projects/react-app
-# Suas cursor rules já estão configuradas!
-```
-
-### Projeto Existente
-```bash
-cd ~/projects/existing-project
-cursor-sync  # ou cursor-link para symlink
-```
-
-### Múltiplos Projetos
-```bash
-# Bash
-for dir in ~/projects/*/; do cursor-sync "$dir"; done
-
-# Fish shell
-for dir in ~/projects/*/; cursor-sync $dir; end
-```
+### Team Sharing
+1. Push this repository to your team's git hosting
+2. Team members clone and configure aliases
+3. Use **sync mode** for shared rules
+4. Use **link mode** for personal customizations
 
 ## 🚨 Troubleshooting
 
-### Rules não aparecem no Cursor
-1. Verifique se os arquivos estão em `.cursor/rules/`
-2. Reinicie o Cursor
-3. Verifique se os arquivos têm extensão `.mdc`
-
-### Symlink quebrado
+### Rules Not Working
 ```bash
-# Remove e recria
-rm -rf .cursor/rules
-cursor-link
+# Check if rules directory exists
+ls -la .cursor/rules/
+
+# Verify symlink is working
+ls -la .cursor/rules
+file .cursor/rules
+
+# Re-sync/re-link
+cursor-sync  # or cursor-link
 ```
 
-### Script não encontrado
+### Scripts Not Found
 ```bash
-# Verifique se os scripts são executáveis
-chmod +x ~/cursor-config/scripts/*.sh
+# Check aliases
+alias | grep cursor
+
+# Reload shell configuration
+source ~/.zshrc  # or ~/.bashrc
+
+# Manual script execution
+~/cursor-config/scripts/sync-rules.sh --help
 ```
 
-### Permission denied
+### Git Issues
 ```bash
-# Torne os scripts executáveis
+# Check repository status
 cd ~/cursor-config
-chmod +x scripts/*.sh
+git status
+
+# Update manually
+git pull
+
+# Fix conflicts if needed
+git merge
 ```
 
-## 🔄 Atualizações
+## 🤝 Contributing
 
-### Atualizando Rules Central
-```bash
-cd ~/cursor-config
-git pull origin main
-# Projetos com symlink: atualizados automaticamente
-# Projetos com cópia: execute cursor-sync
-```
+1. Fork this repository
+2. Create your feature branch
+3. Add or modify rules in `rules/`
+4. Test with different projects
+5. Submit a Pull Request
 
-### Sincronizando Todos os Projetos
-```bash
-# Para projetos com cópia
-find ~/projects -name ".cursor" -type d | while read dir; do
-    project_dir=$(dirname "$dir")
-    echo "Atualizando: $project_dir"
-    cursor-sync "$project_dir"
-done
-```
+### Rule Guidelines
+- Keep rules focused and specific
+- Use clear, actionable language
+- Include examples when helpful
+- Test with real projects
+- Document expected behavior
 
-## 🎉 Pronto!
+## 📜 License
 
-Agora você tem um sistema centralizado de cursor rules que:
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-- ✅ **Elimina duplicação** de configurações
-- ✅ **Facilita atualizações** em múltiplos projetos
-- ✅ **Suporta diferentes workflows** (symlink vs copy)
-- ✅ **Inclui automação completa** via scripts
-- ✅ **Mantém flexibilidade** para customizações
+## 🙏 Acknowledgments
+
+- Cursor AI for the amazing AI-powered editor
+- The open-source community for inspiration
+- All contributors who help improve these rules
 
 ---
 
-**💡 Dica:** Use `cursor-setup . link` em projetos pessoais e `cursor-setup . copy` em projetos de equipe!
+**Made with ❤️ for developers who love automation and consistency.**

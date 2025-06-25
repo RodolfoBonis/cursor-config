@@ -1,97 +1,97 @@
-# 🚀 Quick Start - Cursor Rules Centralizadas
+# 🚀 Quick Start - Centralized Cursor Rules
 
-## ✅ Sistema Instalado e Configurado!
+## ✅ System Installed and Configured!
 
-Seu sistema de cursor rules centralizadas está pronto para uso. Aqui estão os comandos principais:
+Your centralized cursor rules system is ready to use. Here are the main commands:
 
-## 🎯 Comandos Principais
+## 🎯 Main Commands
 
-### Para Projetos Novos
+### For New Projects
 ```bash
-# Novo projeto com symlink (recomendado para desenvolvimento pessoal)
-cursor-setup ~/projects/novo-projeto link
+# New project with symlink (recommended for personal development)
+cursor-setup ~/projects/new-project link
 
-# Novo projeto com cópia (recomendado para equipes)
-cursor-setup ~/projects/novo-projeto copy
+# New project with copy (recommended for teams)
+cursor-setup ~/projects/new-project copy
 ```
 
-### Para Projetos Existentes
+### For Existing Projects
 ```bash
-# No diretório do projeto
-cd ~/projects/meu-projeto
+# In project directory
+cd ~/projects/my-project
 
-# Com symlink (atualização automática)
+# With symlink (automatic updates)
 cursor-link
 
-# Com cópia (controle manual)
+# With copy (manual control)
 cursor-sync
 ```
 
-### Gerenciamento
+### Management
 ```bash
-# Editar rules centrais
+# Edit central rules
 cursor-edit
 
-# Atualizar rules e aplicar no projeto atual
-cursor-update            # atualiza e faz sync
-cursor-update link       # atualiza e faz link
+# Update rules and apply to current project
+cursor-update            # update and sync
+cursor-update link       # update and link
 
-# Sincronizar projetos com cópia
-cursor-sync ~/projects/projeto1
-cursor-sync ~/projects/projeto2
+# Synchronize projects with copy
+cursor-sync ~/projects/project1
+cursor-sync ~/projects/project2
 
-# Reconfigurar projeto
-cursor-setup . link  # muda para symlink
-cursor-setup . copy  # muda para cópia
+# Reconfigure project
+cursor-setup . link  # change to symlink
+cursor-setup . copy  # change to copy
 ```
 
-## 🔧 Status Atual
+## 🔧 Current Status
 
-- ✅ **Repositório central:** `~/cursor-config/`
-- ✅ **Scripts instalados:** sync, link, setup
-- ✅ **Aliases configurados:** cursor-update, cursor-sync, cursor-link, cursor-setup, cursor-edit
-- ✅ **Projeto atual configurado:** symlink ativo no microdetect-api
+- ✅ **Central repository:** `~/cursor-config/`
+- ✅ **Scripts installed:** sync, link, setup
+- ✅ **Aliases configured:** cursor-update, cursor-sync, cursor-link, cursor-setup, cursor-edit
+- ✅ **Current project configured:** active symlink in microdetect-api
 
-## 📋 Rules Disponíveis
+## 📋 Available Rules
 
-1. **`commit-flow.mdc`** - Automação de commits convencionais
-2. **`pr-analysis.mdc`** - Análise detalhada de PRs
-3. **`pr-creation.mdc`** - Criação automática de PRs
+1. **`commit-flow.mdc`** - Conventional commits automation
+2. **`pr-analysis.mdc`** - Detailed PR analysis
+3. **`pr-creation.mdc`** - Automatic PR creation
 
-## 🎭 Diferentes Modos
+## 🎭 Different Modes
 
-### 🔗 Symlink (Atual no microdetect-api)
-- ✅ Atualização automática
-- ✅ Ideal para desenvolvimento pessoal
-- ⚠️ Adicione `.cursor/rules` ao `.gitignore`
+### 🔗 Symlink
+- ✅ Automatic updates
+- ✅ Ideal for personal development
+- ⚠️ Add `.cursor/rules` to `.gitignore`
 
-### 📋 Cópia
-- ✅ Versionamento com o código
-- ✅ Ideal para equipes
-- ✅ Controle manual de atualizações
+### 📋 Copy
+- ✅ Versioning with code
+- ✅ Ideal for teams
+- ✅ Manual update control
 
-## 🚀 Próximos Passos
+## 🚀 Next Steps
 
-1. **Teste as rules** - Faça um commit ou analise um PR
-2. **Configure outros projetos:**
+1. **Test the rules** - Make a commit or analyze a PR
+2. **Configure other projects:**
    ```bash
-   cursor-setup ~/projects/outro-projeto link
+   cursor-setup ~/projects/another-project link
    ```
-3. **Personalize as rules:**
+3. **Customize rules:**
    ```bash
    cursor-edit
    ```
 
-## 🆘 Ajuda Rápida
+## 🆘 Quick Help
 
 ```bash
-# Ajuda dos scripts
+# Script help
 ~/cursor-config/scripts/cursor-update-rules.sh --help
 ~/cursor-config/scripts/sync-rules.sh --help
 ~/cursor-config/scripts/link-rules.sh --help
 ~/cursor-config/scripts/setup-project.sh --help
 
-# Verificar se alias funcionam
+# Check if aliases work
 cursor-update --help
 cursor-sync --help
 cursor-link --help
@@ -100,4 +100,4 @@ cursor-setup --help
 
 ---
 
-**🎉 Pronto para usar!** Suas cursor rules agora estão centralizadas e sincronizadas!
+**🎉 Ready to use!** Your cursor rules are now centralized and synchronized!

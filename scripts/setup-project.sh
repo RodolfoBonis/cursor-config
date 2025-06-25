@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# Script para configurar um novo projeto com cursor rules
-# Uso: ./setup-project.sh [diretório_do_projeto] [modo]
+# Script to configure a new project with cursor rules
+# Usage: ./setup-project.sh [project_directory] [mode]
 
 set -e
 
-# Cores para output
+# Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -13,76 +13,76 @@ BLUE='\033[0;34m'
 PURPLE='\033[0;35m'
 NC='\033[0m' # No Color
 
-# Função para exibir ajuda
+# Function to display help
 show_help() {
     echo -e "${BLUE}🚀 Cursor Project Setup${NC}"
-    echo "Este script configura um projeto com cursor rules."
+    echo "This script configures a project with cursor rules."
     echo ""
-    echo "Uso:"
-    echo "  $0 [diretório] [modo]"
+    echo "Usage:"
+    echo "  $0 [directory] [mode]"
     echo ""
-    echo "Modos:"
-    echo "  copy    - Copia as rules (padrão)"
-    echo "  link    - Cria symlink (recomendado para desenvolvimento)"
+    echo "Modes:"
+    echo "  copy    - Copy rules (default)"
+    echo "  link    - Create symlink (recommended for development)"
     echo ""
-    echo "Exemplos:"
-    echo "  $0                                    # Configura projeto atual com copy"
-    echo "  $0 ~/projects/novo-projeto           # Configura projeto específico"
-    echo "  $0 ~/projects/novo-projeto link      # Configura com symlink"
-    echo "  $0 . link                            # Configura atual com symlink"
+    echo "Examples:"
+    echo "  $0                                    # Configure current project with copy"
+    echo "  $0 ~/projects/new-project            # Configure specific project"
+    echo "  $0 ~/projects/new-project link       # Configure with symlink"
+    echo "  $0 . link                            # Configure current with symlink"
 }
 
-# Verifica se o usuário pediu ajuda
+# Check if user asked for help
 if [[ "$1" == "-h" || "$1" == "--help" ]]; then
     show_help
     exit 0
 fi
 
-# Define parâmetros
+# Define parameters
 TARGET_DIR="${1:-$(pwd)}"
 MODE="${2:-copy}"
 
-# Valida o modo
+# Validate mode
 if [[ "$MODE" != "copy" && "$MODE" != "link" ]]; then
-    echo -e "${RED}❌ Erro: Modo '$MODE' inválido. Use 'copy' ou 'link'.${NC}"
+    echo -e "${RED}❌ Error: Invalid mode '$MODE'. Use 'copy' or 'link'.${NC}"
     exit 1
 fi
 
-# Resolve o caminho absoluto
+# Resolve absolute path
 TARGET_DIR=$(cd "$TARGET_DIR" 2>/dev/null && pwd || echo "$TARGET_DIR")
 
-# Verifica se o diretório existe
+# Check if directory exists
 if [[ ! -d "$TARGET_DIR" ]]; then
-    echo -e "${YELLOW}📁 Diretório '$TARGET_DIR' não existe. Criando...${NC}"
+    echo -e "${YELLOW}📁 Directory '$TARGET_DIR' does not exist. Creating...${NC}"
     mkdir -p "$TARGET_DIR"
 fi
 
-# Caminho do repositório de cursor rules
+# Path to cursor rules repository
 CURSOR_CONFIG_DIR="$HOME/cursor-config"
 SCRIPTS_DIR="$CURSOR_CONFIG_DIR/scripts"
 
-echo -e "${PURPLE}🚀 Configurando projeto com cursor rules...${NC}"
-echo -e "${BLUE}📁 Projeto: $TARGET_DIR${NC}"
-echo -e "${BLUE}🔧 Modo: $MODE${NC}"
+echo -e "${PURPLE}🚀 Configuring project with cursor rules...${NC}"
+echo -e "${BLUE}📁 Project: $TARGET_DIR${NC}"
+echo -e "${BLUE}🔧 Mode: $MODE${NC}"
 
-# Executa o script apropriado
+# Execute appropriate script
 if [[ "$MODE" == "link" ]]; then
     if [[ -f "$SCRIPTS_DIR/link-rules.sh" ]]; then
-        echo -e "${BLUE}🔗 Criando symlink...${NC}"
+        echo -e "${BLUE}🔗 Creating symlink...${NC}"
         bash "$SCRIPTS_DIR/link-rules.sh" "$TARGET_DIR"
     else
-        echo -e "${RED}❌ Script link-rules.sh não encontrado!${NC}"
+        echo -e "${RED}❌ Script link-rules.sh not found!${NC}"
         exit 1
     fi
 else
     if [[ -f "$SCRIPTS_DIR/sync-rules.sh" ]]; then
-        echo -e "${BLUE}📋 Copiando rules...${NC}"
+        echo -e "${BLUE}📋 Copying rules...${NC}"
         bash "$SCRIPTS_DIR/sync-rules.sh" "$TARGET_DIR"
     else
-        echo -e "${RED}❌ Script sync-rules.sh não encontrado!${NC}"
+        echo -e "${RED}❌ Script sync-rules.sh not found!${NC}"
         exit 1
     fi
 fi
 
-echo -e "${GREEN}✅ Projeto configurado com sucesso!${NC}"
-echo -e "${PURPLE}�� Projeto pronto para usar com cursor rules!${NC}"
+echo -e "${GREEN}✅ Project configured successfully!${NC}"
+echo -e "${PURPLE}🎯 Project ready to use with cursor rules!${NC}"
