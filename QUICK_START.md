@@ -32,6 +32,10 @@ cursor-sync
 # Editar rules centrais
 cursor-edit
 
+# Atualizar rules e aplicar no projeto atual
+cursor-update            # atualiza e faz sync
+cursor-update link       # atualiza e faz link
+
 # Sincronizar projetos com cópia
 cursor-sync ~/projects/projeto1
 cursor-sync ~/projects/projeto2
@@ -45,7 +49,7 @@ cursor-setup . copy  # muda para cópia
 
 - ✅ **Repositório central:** `~/cursor-config/`
 - ✅ **Scripts instalados:** sync, link, setup
-- ✅ **Aliases configurados:** cursor-sync, cursor-link, cursor-setup, cursor-edit
+- ✅ **Aliases configurados:** cursor-update, cursor-sync, cursor-link, cursor-setup, cursor-edit
 - ✅ **Projeto atual configurado:** symlink ativo no microdetect-api
 
 ## 📋 Rules Disponíveis
@@ -82,11 +86,13 @@ cursor-setup . copy  # muda para cópia
 
 ```bash
 # Ajuda dos scripts
+~/cursor-config/scripts/cursor-update-rules.sh --help
 ~/cursor-config/scripts/sync-rules.sh --help
 ~/cursor-config/scripts/link-rules.sh --help
 ~/cursor-config/scripts/setup-project.sh --help
 
 # Verificar se alias funcionam
+cursor-update --help
 cursor-sync --help
 cursor-link --help
 cursor-setup --help

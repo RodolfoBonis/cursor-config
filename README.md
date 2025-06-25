@@ -35,6 +35,7 @@ Adicione ao seu `~/.zshrc` ou `~/.bashrc`:
 alias cursor-sync="~/cursor-config/scripts/sync-rules.sh"
 alias cursor-link="~/cursor-config/scripts/link-rules.sh"
 alias cursor-setup="~/cursor-config/scripts/setup-project.sh"
+alias cursor-update="~/cursor-config/scripts/cursor-update-rules.sh"
 alias cursor-edit="code ~/cursor-config/rules"
 ```
 
@@ -82,6 +83,23 @@ cursor-setup . link
 ```
 
 ## 🛠️ Scripts Disponíveis
+
+### `cursor-update-rules.sh` - Atualização Completa
+- ✅ Atualiza repositório cursor-config (git pull)
+- ✅ Aplica rules no projeto (sync ou link)
+- ✅ Processo automatizado em 2 passos
+- ✅ Suporte para múltiplos modos
+
+**Uso:**
+```bash
+./scripts/cursor-update-rules.sh [sync|link] [diretório]
+./scripts/cursor-update-rules.sh --help
+
+# Exemplos
+cursor-update                    # Atualiza e aplica sync no atual
+cursor-update link               # Atualiza e aplica link no atual  
+cursor-update sync ~/projeto     # Atualiza e aplica sync em projeto
+```
 
 ### `sync-rules.sh` - Sincronização
 - ✅ Copia rules para `.cursor/rules/`
