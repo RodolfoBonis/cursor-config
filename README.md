@@ -146,7 +146,7 @@ cursor-update sync ~/project     # Update and apply sync to project
 cursor-edit
 
 # Or manually
-code ~/cursor-config/rules/
+cursor ~/cursor-config/rules/
 ```
 
 ### Adding New Rule
