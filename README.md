@@ -11,6 +11,7 @@ cursor-config/
 │   ├── pr-analysis.mdc        # 🔍 Análise detalhada de PRs
 │   └── pr-creation.mdc        # 🚀 Criação automática de PRs
 ├── scripts/                   # 🛠️ Scripts de automação
+│   ├── cursor-update-rules.sh # 🔄 Atualiza repo e aplica rules automaticamente
 │   ├── sync-rules.sh          # 📋 Sincroniza rules (copia arquivos)
 │   ├── link-rules.sh          # 🔗 Cria symlinks (atualização automática)
 │   └── setup-project.sh       # 🚀 Configura projeto completo
