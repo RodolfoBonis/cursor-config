@@ -37,7 +37,7 @@ alias cursor-sync="~/cursor-config/scripts/sync-rules.sh"
 alias cursor-link="~/cursor-config/scripts/link-rules.sh"
 alias cursor-setup="~/cursor-config/scripts/setup-project.sh"
 alias cursor-update="~/cursor-config/scripts/cursor-update-rules.sh"
-alias cursor-edit="code ~/cursor-config/rules"
+alias cursor-edit="cursor ~/cursor-config/rules"
 ```
 
 Recarregue o terminal:
