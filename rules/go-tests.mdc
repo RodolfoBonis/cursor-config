@@ -1,0 +1,154 @@
+---
+description: Rules for writing tests in Go applications
+globs: **/*_test.go
+alwaysApply: true
+---
+# Rules for Writing Tests in Go
+
+## Structure and Organization
+- Write test files in the same directory as the production code, naming them with the `_test.go` suffix (e.g., `user_service_test.go` for `user_service.go`).
+- Organize tests in functions with descriptive names starting with `Test`, using PascalCase (e.g., `TestUserService_CreateUser_ValidInput`).
+- Use subtests with `t.Run` for specific scenarios within a test function, naming them clearly (e.g., `t.Run("should return error when email is empty", ...)`).
+- Structure the test directory to mirror the package structure, maintaining clarity (e.g., `internal/repository/postgres/user_test.go`).
+- Always include a comment at the start of each test file describing its purpose, referencing the tested package (e.g., `// Tests for user service logic`).
+
+## Test Patterns
+- Follow the **Arrange-Act-Assert** (AAA) pattern:
+  - **Arrange**: Set up the initial state, including mocks, test data, and dependencies.
+  - **Act**: Execute the function or method being tested.
+  - **Assert**: Verify the expected results using clear assertions.
+- Write unit tests for individual functions/methods and integration tests for complete flows (e.g., database interactions).
+- Use table-driven tests for testing multiple cases in a single test function, especially for functions with varied input conditions:
+  ```go
+  tests := []struct {
+      name     string
+      input    InputType
+      expected ExpectedType
+      wantErr  bool
+  }{
+      {name: "valid input", input: validInput, expected: validOutput, wantErr: false},
+      {name: "invalid input", input: invalidInput, expected: nil, wantErr: true},
+  }
+  for _, tt := range tests {
+      t.Run(tt.name, func(t *testing.T) {
+          // Arrange, Act, Assert
+      })
+  }
+  ```
+- Use `t.Parallel()` for tests that do not share state, improving efficiency.
+- Always clean up resources after integration tests (e.g., truncate database tables) using `t.Cleanup`.
+
+## When to Mock Data
+- **Mock**:
+  - For external dependencies like APIs, databases, or third-party services, use `gomock` or interfaces to isolate test logic.
+  - In unit tests, mock all external dependencies to ensure isolation and determinism.
+  - Example with `gomock`:
+    ```go
+    ctrl := gomock.NewController(t)
+    defer ctrl.Finish()
+    mockRepo := mock_repository.NewMockUserRepository(ctrl)
+    mockRepo.EXPECT().FindByID(gomock.Any()).Return(user, nil)
+    ```
+- **Do Not Mock**:
+  - In integration tests, use a real database (e.g., PostgreSQL in a Docker container) to validate infrastructure interactions.
+  - Do not mock pure functions or simple logic that does not rely on external systems, as this may hide real errors.
+  - Avoid mocks for internal data structures or core business logic, testing them directly with real data.
+
+## Tools and Libraries
+- Use the standard `testing` package for simple tests.
+- Use `github.com/stretchr/testify` (`assert` and `require`) for more expressive assertions:
+  ```go
+  import (
+      "testing"
+      "github.com/stretchr/testify/assert"
+  )
+  assert.Equal(t, expected, actual, "values should match")
+  ```
+- Use `gomock` for creating mocks of interfaces in unit tests.
+- For integration tests with databases, use `testcontainers-go` to create ephemeral containers (e.g., PostgreSQL, Redis).
+- Use `sqlmock` for tests that simulate SQL interactions without a real database.
+
+## Best Practices
+- **Test Coverage**: Aim for at least 80% code coverage, prioritizing critical paths (e.g., error cases, main flows).
+- **Specific Errors**: Check for specific errors using `errors.Is` or `errors.As` instead of comparing error strings:
+  ```go
+  if errors.Is(err, repository.ErrNotFound) {
+      // Handle specific error
+  }
+  ```
+- **Deterministic Tests**: Avoid dependencies on time (e.g., `time.Now()`) or global state. Use fixed values or mocks for dates/times.
+- **Clear Naming**: Use descriptive test variable names (e.g., `userRepo` instead of `repo`, `inputUser` instead of `u`).
+- **Avoid Fragile Tests**: Do not rely on specific execution order or shared state between tests.
+- **Documentation**: Include comments explaining complex test cases or specific scenarios (e.g., "Tests behavior when the user already exists").
+
+## Example Test Structure
+```go
+package user
+
+import (
+    "testing"
+    "github.com/stretchr/testify/assert"
+    "github.com/golang/mock/gomock"
+)
+
+// Tests for user service logic
+func TestUserService_CreateUser(t *testing.T) {
+    t.Parallel()
+    ctrl := gomock.NewController(t)
+    defer ctrl.Finish()
+
+    mockRepo := mock_repository.NewMockUserRepository(ctrl)
+    svc := NewUserService(mockRepo)
+
+    tests := []struct {
+        name     string
+        input    User
+        setup    func()
+        expected error
+    }{
+        {
+            name:  "valid user",
+            input: User{Email: "test@example.com", Name: "Test User"},
+            setup: func() {
+                mockRepo.EXPECT().Save(gomock.Any()).Return(nil)
+            },
+            expected: nil,
+        },
+        {
+            name:  "duplicate email",
+            input: User{Email: "test@example.com", Name: "Test User"},
+            setup: func() {
+                mockRepo.EXPECT().Save(gomock.Any()).Return(repository.ErrDuplicateEmail)
+            },
+            expected: repository.ErrDuplicateEmail,
+        },
+    }
+
+    for _, tt := range tests {
+        t.Run(tt.name, func(t *testing.T) {
+            // Arrange
+            tt.setup()
+
+            // Act
+            err := svc.CreateUser(tt.input)
+
+            // Assert
+            if tt.expected == nil {
+                assert.NoError(t, err)
+            } else {
+                assert.ErrorIs(t, err, tt.expected)
+            }
+        })
+    }
+}
+```
+
+## References
+- Follow the standards defined in `@docs/testing_guidelines.md` for team consistency.
+- Refer to `@internal/repository/interfaces.go` for interfaces that should be mocked.
+- Use `@testdata/fixtures.go` for shared test data.
+
+## Exceptions
+- For integration tests, use a Docker container with PostgreSQL (defined in `@testcontainers/setup.go`) instead of mocks.
+- Avoid mocks in tests of pure business logic (e.g., domain validations in `domain/user.go`).
+---
