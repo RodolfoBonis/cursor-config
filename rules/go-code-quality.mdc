@@ -1,0 +1,280 @@
+---
+alwaysApply: true
+---
+
+# Go Code Quality Standards
+
+## Objective
+Maintain high code quality, security, and performance in the gin-decorators-v2 project following Go best practices and established patterns.
+
+## Code Structure and Organization
+
+### Function Guidelines
+- **Small functions**: Maximum 30 lines per function
+- **Cognitive complexity**: Maximum 25 points per function
+- **Single responsibility**: One function = one responsibility
+- **Descriptive names**: Use names that explain what the function does
+- **English comments**: All code comments must be in English
+- **Portuguese documentation**: User-facing explanations in Portuguese
+
+### Architecture Patterns
+- **Separation of concerns**: Break complex functions into helper functions
+- **Dependency injection**: Use interfaces for decoupling
+- **Centralized configuration**: Use configuration structs
+- **Error handling**: Always handle errors properly
+- **Structured logging**: Use appropriate log levels (Verbose, Normal, Error)
+
+## Security Patterns
+
+### Cryptography and Hashing
+- **NEVER use MD5**: Always use SHA-256 or higher
+- **Secure TLS**: Always configure MinVersion: tls.VersionTLS12
+- **Valid certificates**: In production, never use InsecureSkipVerify: true
+- **Input validation**: Always validate input data
+- **Sanitization**: Sanitize data before using in queries or templates
+
+### Type Conversions
+- **Integer overflow**: Use nolint:gosec comments only when safe
+- **Safe conversions**: Always verify if conversion is safe
+- **Bounds checking**: Check limits before accessing slices/arrays
+
+### Web Security
+- **CORS configured**: Configure CORS properly
+- **Rate limiting**: Implement rate limiting on public endpoints
+- **Input validation**: Validate all user inputs
+- **SQL injection**: Use prepared statements or ORM
+
+## Complexity Management
+
+### Cognitive Complexity Reduction
+- **Extract helper functions**: Break complex functions into smaller ones
+- **Switch statements**: Use maps or functions to reduce complexity
+- **Early returns**: Use early returns to reduce nesting
+- **Guard clauses**: Use guard clauses at the beginning of functions
+
+### Function Refactoring Pattern
+```go
+// ❌ Before - Complex function
+func processComplexData(data []Data) error {
+    // 50+ lines with multiple responsibilities
+}
+
+// ✅ After - Smaller functions
+func processComplexData(data []Data) error {
+    if err := validateData(data); err != nil {
+        return err
+    }
+    
+    processedData := transformData(data)
+    return saveData(processedData)
+}
+
+func validateData(data []Data) error { /* ... */ }
+func transformData(data []Data) []ProcessedData { /* ... */ }
+func saveData(data []ProcessedData) error { /* ... */ }
+```
+
+## Testing Patterns
+
+### Test Structure
+- **Descriptive names**: `TestFunctionName_Scenario_ExpectedResult`
+- **Arrange-Act-Assert**: Always follow AAA pattern
+- **Isolated tests**: Each test should be independent
+- **Appropriate mocks**: Use mocks for external dependencies
+
+### Test Coverage
+- **Minimum 80%**: Maintain minimum coverage of 80%
+- **Error tests**: Always test error scenarios
+- **Edge cases**: Test extreme cases and edge cases
+- **Integration tests**: For critical functionality
+
+### Unused Parameters
+```go
+// ❌ Before
+func TestFunction(t *testing.T) {
+    c, _ := gin.CreateTestContext(httptest.NewRecorder())
+    // c is not used
+}
+
+// ✅ After
+func TestFunction(t *testing.T) {
+    c, _ := gin.CreateTestContext(httptest.NewRecorder())
+    _ = c // Use context to avoid unused variable warning
+}
+```
+
+## Performance Patterns
+
+### Optimizations
+- **Slice allocation**: Use `make()` with known size
+- **Pointer passing**: For large structs, pass by pointer
+- **Object pools**: For frequently created/destroyed objects
+- **Goroutines**: Use goroutines for I/O operations
+
+### Memory Management
+- **Avoid unnecessary allocations**: Reuse buffers when possible
+- **Defer cleanup**: Always use defer for resource cleanup
+- **Context timeouts**: Configure appropriate timeouts
+
+## Documentation Patterns
+
+### Comments
+- **Function comments**: Explain what the function does, not how
+- **Complexity comments**: Explain complex logic
+- **Examples**: Provide examples for public functions
+- **TODO/FIXME**: Use appropriate tags for pending tasks
+
+### API Documentation
+- **Swagger/OpenAPI**: Keep documentation updated
+- **Usage examples**: Provide practical examples
+- **Clear descriptions**: Use clear and concise language
+
+## Configuration Patterns
+
+### Development Configuration
+- **Environment files**: Use environment variables for configurations
+- **Environment-specific configs**: Separate dev/prod configs
+- **Default values**: Always provide secure default values
+- **Validation**: Validate configurations at startup
+
+### Development Tools
+- **golangci-lint**: Use strict configuration
+- **go fmt**: Always format code
+- **go vet**: Run regularly
+- **pre-commit hooks**: Configure hooks for quality
+
+## Error Handling Patterns
+
+### Error Treatment
+- **Error wrapping**: Use `fmt.Errorf("context: %w", err)`
+- **Error types**: Define specific error types
+- **Logging**: Log errors with appropriate context
+- **Recovery**: Implement recovery for panics
+
+### Validation
+- **Input validation**: Validate inputs at the beginning of functions
+- **Business rules**: Validate business rules
+- **Type safety**: Use strong types to avoid errors
+
+## Quality Metrics
+
+### Goals
+- **Cognitive complexity**: < 25 per function
+- **Test coverage**: > 80%
+- **Lint errors**: 0
+- **Critical warnings**: 0
+- **Code duplication**: < 5%
+
+### Monitoring
+- **Static analysis**: Run regularly
+- **Code reviews**: Always review code
+- **Continuous refactoring**: Improve code constantly
+- **Documentation**: Keep documentation updated
+
+## Development Process
+
+### Before Committing
+1. **Run lint**: `make lint`
+2. **Run tests**: `go test ./...`
+3. **Check coverage**: `go test -cover`
+4. **Format code**: `go fmt ./...`
+5. **Review changes**: `git diff --cached`
+
+### Before Creating PR
+1. **All tests passing**
+2. **Adequate coverage**
+3. **Updated documentation**
+4. **Working examples**
+5. **Acceptable performance**
+
+## Naming Conventions
+
+### Functions and Variables
+- **CamelCase**: For functions and variables
+- **PascalCase**: For types and public functions
+- **snake_case**: For configuration files
+- **kebab-case**: For URLs and paths
+
+### Tags and Annotations
+- **JSON tags**: Use snake_case for JSON
+- **YAML tags**: Use snake_case for YAML
+- **Struct tags**: Maintain consistency
+
+## Tool Configuration
+
+### golangci-lint
+```yaml
+# .golangci.yml
+linters:
+  enable:
+    - gocognit
+    - gosec
+    - govet
+    - errcheck
+    - unused
+    - gocritic
+    - gofmt
+    - goimports
+
+linters-settings:
+  gocognit:
+    min-complexity: 25
+  gosec:
+    excludes:
+      - G404 # Random number generation
+```
+
+### go.mod
+- **Fixed versions**: Use specific versions
+- **Minimal modules**: Include only necessary dependencies
+- **Regular updates**: Keep dependencies updated
+
+## Quality Checklist
+
+### Before Committing
+- [ ] Formatted code (`go fmt`)
+- [ ] Lint passing (`make lint`)
+- [ ] Tests passing (`go test`)
+- [ ] Adequate coverage (>80%)
+- [ ] Updated documentation
+- [ ] Working examples
+- [ ] Acceptable performance
+
+### Before Creating PR
+- [ ] All checks passing
+- [ ] Code review approved
+- [ ] Complete documentation
+- [ ] Updated changelog
+- [ ] Documented breaking changes
+- [ ] Migration guide (if necessary)
+
+## Useful Commands
+
+```bash
+# Code quality
+make lint                    # Run lint
+make test                    # Run tests
+make test-coverage          # Tests with coverage
+make format                 # Format code
+make clean                  # Clean build
+
+# Development
+make dev                    # Development server
+make build                  # Production build
+make install                # Install tools
+```
+
+## References
+
+- [Effective Go](https://golang.org/doc/effective_go.html)
+- [Go Code Review Comments](https://github.com/golang/go/wiki/CodeReviewComments)
+- [Go Security Best Practices](https://golang.org/doc/security/best-practices)
+- [Go Testing Best Practices](https://golang.org/doc/tutorial/add-a-test)
+
+---
+
+**Remember**: Code quality is a continuous process. Always seek to improve and refactor when necessary! 🚀
+description:
+globs:
+alwaysApply: false
+---
